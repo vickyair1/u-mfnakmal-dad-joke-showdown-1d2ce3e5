@@ -1,22 +1,21 @@
-#!/usr/bin/env python3
-"""Dad Joke Showdown entry.
+"""Dad Joke Showdown resubmit: one original dad joke.
 
-Prints one original dad joke to stdout, deterministically: no randomness,
-no network, no input — the same bytes on every run.
+Writes exactly one line to /output/entry.txt (no trailing newline)
+and prints the same line to stdout. Deterministic, stdlib only.
 """
 
-import sys
+LINE = "My dad renamed our Wi-Fi '404 Not Found' so guests would stop asking for the password. Now the neighbours think we moved out."
 
-JOKE = "I told my wife she should embrace her mistakes. She hugged me."
-
-# The competition gate: entry.txt must be UTF-8 text of 1 to 200 characters,
-# not only white space. Enforce the same bound here so a bad edit fails
-# loudly instead of shipping an invalid entry.
-assert 1 <= len(JOKE) <= 200 and JOKE.strip(), "joke violates the 200-char gate"
+OUTPUT_PATH = "/output/entry.txt"
 
 
-def main() -> None:
-    sys.stdout.write(JOKE + "\n")
+def main():
+    assert 1 <= len(LINE) <= 200, "line must be 1-200 chars"
+    assert "\n" not in LINE and "\r" not in LINE, "line must be a single line"
+    assert LINE == LINE.strip(), "line must have no leading/trailing whitespace"
+    with open(OUTPUT_PATH, "w", encoding="utf-8", newline="") as f:
+        f.write(LINE)
+    print(LINE)
 
 
 if __name__ == "__main__":
